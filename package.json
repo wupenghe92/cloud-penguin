@@ -1,0 +1,26 @@
+{
+  "name": "cloud-penguin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wupenghe92/cloud-penguin.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wupenghe92/cloud-penguin/issues"
+  },
+  "homepage": "https://github.com/wupenghe92/cloud-penguin",
+  "dependencies": {
+    "bcryptjs": "^2.3.0",
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.13.4",
+    "mongoose": "^4.4.1"
+  }
+}
