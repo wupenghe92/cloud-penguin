@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./server/server.js"
+    "start": "nodemon ./server/server.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
     "express": "^4.13.4",
-    "mongoose": "^4.4.1"
+    "mongoose": "^4.4.1",
+    "nodemon": "^1.15.1"
   }
 }

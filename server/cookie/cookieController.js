@@ -21,7 +21,7 @@ function setSSIDCookie(req, res, next) {
     httpOnly: true
   };
   res.cookie('ssid', res.locals._id, option);
-  next();
+  return res.redirect('/kimi');
 }
 
 

@@ -1,13 +1,9 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const bcrypt = require('bcryptjs');
 
-/**
-* Hint: Why is bcrypt required here?
-*/
-// const SALT_WORK_FACTOR = 10;
-// const bcrypt = require('bcryptjs');
+const SALT_WORK_FACTOR = 10;
 
-const userSchema = new Schema({
+const userSchema = new mongoose.Schema({
   username:     {type: String, required: true, unique: true},
   password:     {type: String, required: true},
   created:      {type: Date,   default: Date.now},
@@ -15,16 +11,16 @@ const userSchema = new Schema({
 });
 
 
-// userSchema.pre('save', function(next) {
-//   const user = this;
-//   const salt = bcrypt.genSaltSync(SALT_WORK_FACTOR);
-//   const hashedPassword = bcrypt.hashSync(user.password, salt);
-//   user.password = hashedPassword;
-//   next();
-// });
+userSchema.pre('save', function(next) {
+  const user = this;
+  const salt = bcrypt.genSaltSync(SALT_WORK_FACTOR);
+  const hashedPassword = bcrypt.hashSync(user.password, salt);
+  user.password = hashedPassword;
+  next();
+});
 
-// userSchema.methods.comparePassword = function(plainPassword) {
-//   return bcrypt.compareSync(plainPassword, this.password);
-// }
+userSchema.methods.comparePassword = function(plainPassword) {
+  return bcrypt.compareSync(plainPassword, this.password);
+}
 
 module.exports = mongoose.model('User', userSchema);
