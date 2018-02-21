@@ -28,7 +28,7 @@ kimiRouter.post('/feed', userController.getUserInfo, userController.feed);
 
 kimiRouter.post('/play', userController.getUserInfo, userController.play);
 
-
+kimiRouter.get('/info', userController.findAll, userController.sendInfo);
 
 
 

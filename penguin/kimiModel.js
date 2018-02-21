@@ -7,7 +7,7 @@ class Penguin {
     this.happiness = 50;
     this.energy = 100;  //very energetic
     this.hunger = 0;    //not hungry, max=100 means starving
-    this.HUNGER_SPEED = 6000;
+    this.HUNGER_SPEED = 3000;
     this.UPDATE_SPEED = 6000;
     this.busy = false;
     this.playingWith = '';
@@ -30,18 +30,19 @@ class Penguin {
     switch(food) {
       case '':
         this.hunger--;
+        this.happiness += 1;
         break;
       case 'fish':
         this.hunger -= 4;
-        this.happiness += 2
+        this.happiness += 3;
         break;
       case 'squid':
         this.hunger -= 6;
-        this.happiness += 4
+        this.happiness += 5;
         break;
       case 'shrimp':
         this.hunger -= 2;
-        this.happiness += 1
+        this.happiness += 2;
         break;
       case 'penguin':
         this.hunger = 0;
@@ -100,7 +101,7 @@ class Penguin {
       if (err) {
         console.log('fail to update -- kimi');
       }
-      this.currUserFn += 5;
+      this.currUserFn += 7;
       console.log(`Kimi likes ${this.playingWith}`);
     });
   }

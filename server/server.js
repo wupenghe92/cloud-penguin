@@ -36,6 +36,12 @@ app.get(/.css$/, (req, res) => {
   res.set("Content-Type", "text/css; charset=utf-8");
   res.sendFile(path.join(__dirname , `./../client${req.url}`));
 });
+app.get('/build/bundle.js', (req, res) => {
+  res.set("Content-Type", "text/css; charset=utf-8");
+  res.sendFile(path.join(__dirname , `./../build/bundle.js`));
+});
+
+
 // app.get('/style.css', (req, res) => {
 //   res.set("Content-Type", "text/css; charset=utf-8");
 //   res.sendFile(path.join(__dirname , './../client/style.css'));

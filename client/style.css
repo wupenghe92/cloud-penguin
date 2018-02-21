@@ -24,3 +24,12 @@ body {
 .column-m {
     width: 55%;
 }
+
+ol {
+  float:left;
+}
+
+#kimiImg {
+  width: 85%;
+  height: 60%;
+}
