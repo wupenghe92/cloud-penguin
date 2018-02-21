@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 
+const kimiRouter = require('./kimiRouter');
+// const kimiModel = require('./../penguin/kimiModel');
 const cookieController = require('./cookie/cookieController');
 const userController = require('./user/userController');
 
@@ -12,6 +14,9 @@ const app = express();
 
 const mongoURI =  'mongodb://localhost/cloudPenguin';
 mongoose.connect(mongoURI);
+mongoose.connection.once('open', () => {
+  console.log('Connected to Database');
+});
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -19,6 +24,9 @@ app.use((req,res,next)=>{
   console.log(req.method, req.url);
   next();
 });
+
+app.use('/kimi', kimiRouter);
+
 
 app.get('/',  cookieController.isLoggedIn, (req, res) => {
   res.set("Content-Type", "text/html; charset=utf-8");
@@ -33,20 +41,8 @@ app.get('/signup', (req, res) => {
   res.sendFile(path.join(__dirname , './../client/signup.html'));
 });
 
-app.get('/kimi', (req, res) => {
-  res.set("Content-Type", "text/html; charset=utf-8");
-  res.sendFile(path.join(__dirname , './../client/kimi.html'));
-});
-
-app.get('/img/kimi.jpg', (req, res) => {
-  res.sendFile(path.join(__dirname , './../img/kimi.jpg'));
-});
-
-
-
 app.post('/signup', userController.createUser,
                     cookieController.setSSIDCookie);
-
 app.post('/login', userController.verifyUser,
                    cookieController.setSSIDCookie);
 

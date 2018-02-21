@@ -24,8 +24,4 @@ function setSSIDCookie(req, res, next) {
   return res.redirect('/kimi');
 }
 
-
-
-
-
 module.exports = cookieController;
