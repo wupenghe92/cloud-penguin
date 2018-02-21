@@ -2,11 +2,11 @@ const express = require('express');
 const path = require('path');
 const kimiModel = require('./../penguin/kimiModel');
 const userController = require('./user/userController');
-
+const cookieController = require('./cookie/cookieController');
 const kimiRouter = express.Router();
 
 
-kimiRouter.get('/', (req, res) => {
+kimiRouter.get('/', cookieController.isLoggedIn, (req, res) => {
   res.set("Content-Type", "text/html; charset=utf-8");
   res.sendFile(path.join(__dirname , './../client/kimi.html'));
 });

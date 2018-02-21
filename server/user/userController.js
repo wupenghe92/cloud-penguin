@@ -39,25 +39,32 @@ userController.verifyUser = function(req, res, next) {
 userController.feed = function(req, res) {
   const food = req.body.food;
   const user = res.locals.user;
-  // console.log(food, kimi)
   const prevsHappiness = kimi.happiness;
   kimi.feed(food);
   const currHappiness = kimi.happiness;
-  const fnChange = currHappiness - prevsHappiness;
-  userUpdate(user, fnChange)
+  const change = {
+    friendliness: user.friendliness + currHappiness - prevsHappiness,
+  }
+  userUpdate(user, change)
   // res.jsonp(food);
-  .then( ()=>{res.redirect('/kimi')});
+  .then(()=>{res.redirect('/kimi')});
 };
 
 
 userController.play = function(req, res) {
   const user = res.locals.user;
-  // const prevsHappiness = kimi.happiness;
-  // kimi.play(user.friendliness);
-  // const currHappiness = kimi.happiness;
-  // const fnChange = currHappiness - prevsHappiness;
-  // userUpdate(user, fnChange);
-
+  if (kimi.busy) {
+    if (chanceToSteal(user.friendliness)) {
+      kimi.play(user);
+      return res.redirect('/kimi/playing');
+    } else {
+      console.log('kimi doesn\'t want to play with user.username')
+      return res.redirect('/kimi');
+    }
+  }
+  kimi.play(user);
+  console.log(user.username, user.friendliness);
+  // console.log(kimi);
   res.redirect('/kimi/playing');
 };
 
@@ -71,32 +78,37 @@ userController.getUserInfo = function(req, res, next) {
       return next();
     }
     res.locals.user = result[0];
+    console.log(res.locals.user);
+    // console.log(kimi);
     return next();
   });
 };
 
 
-function userUpdate(user, fnChange) {
-  const newfn = user.friendliness + fnChange;
+function userUpdate(user, change) {
   // console.log('userID',user);
   return new Promise((resolve, reject) => {
-    User.findOneAndUpdate({_id: user._id}, {friendliness: newfn},(err, result) => {
+    User.findOneAndUpdate({_id: user._id}, change ,(err, result) => {
       if (err) {
         console.log('fail to update');
         reject(err);
       }
-      console.log('update result',result);
+      console.log('update successful');
       resolve();
     });
-
   });
-
-};
-
+}
 
 
 
 
+function chanceToSteal(friendliness) {
+  if (friendliness < kimi.currUserFn + 10) return false;
+  const prob = Math.round((1 - (9/(friendliness - kimi.currUserFn)))*100);
+  const rand = 100*(Math.random());
+  // console.log(`prob=${prob}%, rand=${rand}%`);
+  return prob > rand;
+}
 // userController.findAll = function(req, res, next) {
 //   User.find({}, (err, result) => {
 //     res.locals.alluser = result;

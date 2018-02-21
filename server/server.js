@@ -28,7 +28,7 @@ app.use((req,res,next)=>{
 app.use('/kimi', kimiRouter);
 
 
-app.get('/',  cookieController.isLoggedIn, (req, res) => {
+app.get('/', (req, res) => {
   res.set("Content-Type", "text/html; charset=utf-8");
   res.sendFile(path.join(__dirname , './../client/login.html'));
 });

@@ -7,7 +7,8 @@ const userSchema = new mongoose.Schema({
   username:     {type: String, required: true, unique: true},
   password:     {type: String, required: true},
   created:      {type: Date,   default: Date.now},
-  friendliness: {type: Number, default: 0}
+  friendliness: {type: Number, default: 0},
+  played:       {type: Boolean, default: false},
 });
 
 

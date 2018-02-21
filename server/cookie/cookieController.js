@@ -7,10 +7,12 @@ cookieController.setSSIDCookie = setSSIDCookie;
 
 function isLoggedIn(req, res, next) {
   const ssid = req.cookies.ssid;
-  if (!ssid) return next();
-  User.find({cookieId: ssid}, (err, result) => {
-    if (result.length === 0) return next();
-    else return next();   //res.redirect('/secret');
+  if (!ssid) {
+    if (req.url === '/kimi') return res.redirect('/');
+  }
+  User.find({_id: ssid}, (err, result) => {
+    if (err || result.length === 0) return res.redirect('/');
+    return next();
   });
 }
 
