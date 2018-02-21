@@ -36,6 +36,10 @@ app.get('/login.css', (req, res) => {
   res.set("Content-Type", "text/css; charset=utf-8");
   res.sendFile(path.join(__dirname , './../client/login.css'));
 });
+app.get('/style.css', (req, res) => {
+  res.set("Content-Type", "text/css; charset=utf-8");
+  res.sendFile(path.join(__dirname , './../client/style.css'));
+});
 app.get('/signup', (req, res) => {
   res.set("Content-Type", "text/html; charset=utf-8");
   res.sendFile(path.join(__dirname , './../client/signup.html'));
