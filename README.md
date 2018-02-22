@@ -5,7 +5,7 @@
 
 ### Installation
 - Install dependencies: `npm install`
-- Start mongo database: `sudo mongod`
+- Start mongo database: `sudo mongod` (need mongodb installed, `brew install mongodb` and then `mkdir -p /data/db` )
 - Start localhost server: `npm start`
 - Transpile react file: `npm run build`
 ### Descriptions
