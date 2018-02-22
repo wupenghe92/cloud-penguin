@@ -106,23 +106,68 @@ var App = function (_Component) {
     _this.state = {
       str: 'Kimi is sleeping',
       friendList: [],
-      status: {}
+      status: {},
+      prevstate: {}
     };
     _this.getData = _this.getData.bind(_this);
     _this.parseData = _this.parseData.bind(_this);
+    _this.updatePrevState = _this.updatePrevState.bind(_this);
+    _this.compareState = _this.compareState.bind(_this);
     return _this;
   }
 
   _createClass(App, [{
+    key: 'shouldComponentUpdate',
+    value: function shouldComponentUpdate(nextProps, nextState) {
+      // console.log(nextState.status);
+      if (this.compareState(nextState)) {
+        //true means prevs state and nextState are the same
+        return false;
+      }
+      this.updatePrevState(nextState);
+      return true;
+    }
+  }, {
+    key: 'compareState',
+    value: function compareState(nextState) {
+      var prevstate = this.state.prevstate;
+      // const nextState = this.state;
+      if (!(nextState.status.happiness === prevstate.happiness) || !(nextState.status.hunger === prevstate.hunger) || !(nextState.status.busy === prevstate.busy) || !(nextState.status.playingWith === prevstate.playingWith)) {
+        return false;
+      }
+      if (!prevstate.friendList || prevstate.friendList.length !== nextState.friendList.length) return false;
+      for (var i = 0; i < nextState.friendList.length; i++) {
+        if (prevstate.friendList[i].username !== nextState.friendList[i].username || prevstate.friendList[i].friendliness !== nextState.friendList[i].friendliness) {
+          return false;
+        }
+      }
+      return true;
+    }
+  }, {
+    key: 'updatePrevState',
+    value: function updatePrevState(nextState) {
+      var prevstate = this.state.prevstate;
+      // const nextState = this.state;
+      prevstate.happiness = nextState.status.happiness;
+      prevstate.hunger = nextState.status.hunger;
+      prevstate.busy = nextState.status.busy;
+      prevstate.playingWith = nextState.status.playingWith;
+      prevstate.friendList = [];
+      for (var i = 0; i < nextState.friendList.length; i++) {
+        prevstate.friendList[i] = {};
+        prevstate.friendList[i].username = nextState.friendList[i].username;
+        prevstate.friendList[i].friendliness = nextState.friendList[i].friendliness;
+      }
+    }
+  }, {
     key: 'componentWillMount',
     value: function componentWillMount() {
-      //componentWillMount
       this.getData();
     }
   }, {
     key: 'parseData',
     value: function parseData(data) {
-      console.log('parseData', data);
+      // console.log('parseData',data);
       this.state.friendList = data.friendList;
       this.state.status = data.kimi;
       if (data.kimi.busy) {
@@ -152,6 +197,7 @@ var App = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
+      console.log('render');
       var image = _react2.default.createElement('img', { id: 'kimiImg', src: "./kimi/kimi.jpg", alt: 'kimi' });
       return _react2.default.createElement(
         'div',
@@ -195,6 +241,7 @@ var PlayingWith = function (_Component2) {
   _createClass(PlayingWith, [{
     key: 'render',
     value: function render() {
+      // console.log('render1');
       return _react2.default.createElement(
         'h3',
         null,
@@ -218,6 +265,7 @@ var FriendList = function (_Component3) {
   _createClass(FriendList, [{
     key: 'render',
     value: function render() {
+      // console.log('render2');
       var list = [];
       for (var i = 0; i < this.props.friendList.length; i++) {
         //this.props.friendList.length
@@ -259,6 +307,7 @@ var KimiStatus = function (_Component4) {
   _createClass(KimiStatus, [{
     key: 'render',
     value: function render() {
+      // console.log('render3');
       return _react2.default.createElement(
         'div',
         null,
@@ -278,11 +327,6 @@ var KimiStatus = function (_Component4) {
 
   return KimiStatus;
 }(_react.Component);
-
-var imgStyles = {
-  width: '80%',
-  height: '58%'
-};
 
 (0, _reactDom.render)(_react2.default.createElement(App, null), document.getElementById('reactComponent'));
 

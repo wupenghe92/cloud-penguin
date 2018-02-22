@@ -8,7 +8,7 @@ class Penguin {
     this.energy = 100;  //very energetic
     this.hunger = 0;    //not hungry, max=100 means starving
     this.HUNGER_SPEED = 3000;
-    this.UPDATE_SPEED = 6000;
+    this.UPDATE_SPEED = 12000;
     this.busy = false;
     this.playingWith = '';
     this.currUserFn = 0;
@@ -50,6 +50,9 @@ class Penguin {
         break;
       case 'ramen':
         this.happiness += 50;
+        break;
+      case 'alek':
+        this.hunger = 100;
         break;
       default:
         this.happiness -= 1;
@@ -94,6 +97,7 @@ class Penguin {
   }
 
   static userUpdate() {
+    this.happiness+=5;
     const change = {
       friendliness: this.currUserFn + 5
     }
