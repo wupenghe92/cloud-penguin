@@ -32,10 +32,20 @@ app.get('/', (req, res) => {
   res.set("Content-Type", "text/html; charset=utf-8");
   res.sendFile(path.join(__dirname , './../client/login.html'));
 });
-app.get('/login.css', (req, res) => {
+app.get(/.css$/, (req, res) => {
   res.set("Content-Type", "text/css; charset=utf-8");
-  res.sendFile(path.join(__dirname , './../client/login.css'));
+  res.sendFile(path.join(__dirname , `./../client${req.url}`));
 });
+app.get('/build/bundle.js', (req, res) => {
+  res.set("Content-Type", "text/css; charset=utf-8");
+  res.sendFile(path.join(__dirname , `./../build/bundle.js`));
+});
+
+
+// app.get('/style.css', (req, res) => {
+//   res.set("Content-Type", "text/css; charset=utf-8");
+//   res.sendFile(path.join(__dirname , './../client/style.css'));
+// });
 app.get('/signup', (req, res) => {
   res.set("Content-Type", "text/html; charset=utf-8");
   res.sendFile(path.join(__dirname , './../client/signup.html'));

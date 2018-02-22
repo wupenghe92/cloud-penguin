@@ -2,6 +2,7 @@ const User = require('./userModel');
 const kimi = require('./../../penguin/kimiModel');
 const userController = {};
 
+
 userController.createUser = function(req, res, next) {
   console.log('body',req.body);
   const newUser = new User(req.body);
@@ -84,6 +85,33 @@ userController.getUserInfo = function(req, res, next) {
   });
 };
 
+userController.sendInfo = function(req, res) {
+  const alluser = res.locals.alluser;
+  alluser.sort((a,b) => {
+    return b.friendliness - a.friendliness;
+  });
+  const friendList = [];
+  const n = alluser.length>=10 ? 10 : alluser.length
+  for (let i=0; i<n; i++) {
+    friendList.push({
+      username:      alluser[i].username,
+      friendliness:  alluser[i].friendliness
+    });
+  }
+  const data = {};
+  data.kimi = {
+    name:         kimi.name,
+    happiness:    kimi.happiness,
+    hunger:       kimi.hunger,
+    busy:         kimi.busy,
+    playingWith:  kimi.playingWith
+  };
+  data.friendList = friendList;
+  res.jsonp(data);
+}
+
+
+
 
 function userUpdate(user, change) {
   // console.log('userID',user);
@@ -109,12 +137,13 @@ function chanceToSteal(friendliness) {
   // console.log(`prob=${prob}%, rand=${rand}%`);
   return prob > rand;
 }
-// userController.findAll = function(req, res, next) {
-//   User.find({}, (err, result) => {
-//     res.locals.alluser = result;
-//     next();
-//   })
-// };
+
+userController.findAll = function(req, res, next) {
+  User.find({}, (err, result) => {
+    res.locals.alluser = result;
+    next();
+  })
+};
 
 
 
